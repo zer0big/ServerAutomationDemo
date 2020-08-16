@@ -15,11 +15,11 @@ variables:
   - name: azure_resource_group_name
     value: "ServerProvisionTesting-$(Build.BuildId)"
   - name: subscription_id
-    value: "XXXXXXXXXXXXXXXXXXXXXXXXXX"
+    value: "a791ad38-5fa2-447d-8833-460ee318d917"
   - name: application_id
-    value: "XXXXXXXXXXXXXXXXXXXXXXXXXX"
+    value: "05ab306a-5873-43cb-9c9d-4455d4e9a00a"
   - name: tenant_id
-    value: "XXXXXXXXXXXXXXXXXXXXXXXXXX"
+    value: "bb43721a-680c-4c9f-b234-72c8fe6c8e3c"
 
 steps:
   - task: PowerShell@2
@@ -29,7 +29,7 @@ steps:
   - task: PowerShell@2
     inputs:
       targetType: "inline"
-      script: New-AzResourceGroup -Name $(azure_resource_group_name) -Location eastus -Force
+      script: New-AzResourceGroup -Name $(azure_resource_group_name) -Location koreacentral -Force
   - task: Pester@0
     inputs:
       scriptFolder: "@{Path='$(System.DefaultWorkingDirectory)/server.template.tests.ps1'; Parameters=@{ResourceGroupName='$(azure_resource_group_name)'}}"
@@ -43,7 +43,7 @@ steps:
       subscriptionId: "$(subscription_id)"
       action: "Create Or Update Resource Group"
       resourceGroupName: $(azure_resource_group_name)
-      location: "East US"
+      location: "Korea Central"
       templateLocation: "Linked artifact"
       csmFile: "server.json"
       csmParametersFile: "server.parameters.json"
