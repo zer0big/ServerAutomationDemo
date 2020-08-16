@@ -30,12 +30,14 @@ steps:
     inputs:
       targetType: "inline"
       script: New-AzResourceGroup -Name $(azure_resource_group_name) -Location koreacentral -Force
-  - task: Pester@0
+  
+  - task: Pester@10
     inputs:
       scriptFolder: "@{Path='$(System.DefaultWorkingDirectory)/server.template.tests.ps1'; Parameters=@{ResourceGroupName='$(azure_resource_group_name)'}}"
       resultsFile: "$(System.DefaultWorkingDirectory)/server.template.tests.XML"
       usePSCore: true
       run32Bit: False
+
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
       deploymentScope: "Resource Group"
@@ -49,7 +51,7 @@ steps:
       csmParametersFile: "server.parameters.json"
       deploymentMode: "Incremental"
       deploymentOutputs: "arm_output"
-  - task: Pester@0
+  - task: Pester@10
     inputs:
       scriptFolder: "@{Path='$(System.DefaultWorkingDirectory)/server.infrastructure.tests.ps1'; Parameters=@{ArmDeploymentJsonOutput='$(arm_output)'}}"
       resultsFile: "$(System.DefaultWorkingDirectory)/server.infrastructure.tests.XML"
